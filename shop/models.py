@@ -9,6 +9,9 @@ class Category(models.Model):
 	is_public = models.BooleanField(default=False, db_index=True)
 	#공개된 카테고리만 찾고싶을때
 
+	def __str__(self):
+		return self.name
+
 class Shop(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.PROTECT)
 	name = models.CharField(max_length=100, db_index=True)
@@ -17,6 +20,9 @@ class Shop(models.Model):
 	is_public = models.BooleanField(default=False, db_index=True)
 	#공개된 가게
 
+	def __str__(self):
+		return self.name
+
 class Review(models.Model):
 	shop = models.ForeignKey(Shop, on_delete=models.PROTECT)
 	author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -24,8 +30,11 @@ class Review(models.Model):
 	rating = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 	message = models.TextField()
 
+	def __str__(self):
+		return self.author
 
 class Item(models.Model):
+	shop = models.ForeignKey(Shop, on_delete=models.PROTECT)
 	name = models.CharField(max_length=100, db_index=True)
 	desc = models.TextField(blank=True)
 	amount = models.PositiveIntegerField()
@@ -33,5 +42,7 @@ class Item(models.Model):
 	is_public = models.BooleanField(default=False, db_index=True)
 	#공개된 아이템
 
+	def __str__(self):
+		return self.name
 # class Order(models.Model):
 # 	pass
