@@ -34,4 +34,7 @@ class ShopAdmin(admin.ModelAdmin):
 	address_link.short_description = "주소 (네이버 지도)"
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-	pass
+	list_display = ['shop','name']
+	list_display_links = ['name']
+	list_filter = ['shop']
+	search_fields = ['name']
