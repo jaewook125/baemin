@@ -1,7 +1,7 @@
 from django.utils.safestring import mark_safe
 from django.contrib import admin
 from .models import Category, Shop, Item
-
+from urllib.parse import quote
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -24,8 +24,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Shop)
 class ShopAdmin(admin.ModelAdmin):
-	pass
+	list_display = ('name','address_link')
 
+	def address_link(self, shop):
+		if shop.address: #위와 동일
+			url = 'https://map.naver.com/?query=' + quote(shop.address)
+			return mark_safe('<a href={} target=_blank>{}</a>'.format(url, shop.address))
+		return None
+	address_link.short_description = "주소 (네이버 지도)"
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
 	pass
