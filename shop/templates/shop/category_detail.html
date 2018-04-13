@@ -2,33 +2,42 @@
 
 
 {% block content %}
-<h2>{{ category.name }}</h2>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>{{ category.name }}</h2>
+			<div class="row">
+					{% for shop in category.shop_set.all %}
+						<div class="col-md-4">
+			              <div class="card mb-4 box-shadow">
+				              	{% if shop.image %}
+					              	<a href="{{ shop.get_absolute_url }}">
+					                	<img class="card-img-top" src="{{ shop.image.url }}" />
+					                </a>
+				                {% endif %}
+                			<div class="card-body">
+			                <p class="card-text">{{ shop.name }}</p>
+			                <p class="card-text">
+			                	{{ shop.desc }}
+<!-- 			                	{{ shop.latlng }} -->
+<!-- 			                	{{ shop.address }} -->
+			                	{{ shop.is_public }}
+			              	</p>
+				                  <div class="d-flex justify-content-between align-items-center">
+				                    <div class="btn-group">
+				                    	<a href="{{ shop.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">view</a>
+				                    </div>
+				                  </div>
+			                  </div>
+							</div>
+						</div>
+				{% endfor %}
 
-
-<table>
-	<tbody>
-		{% for shop in category.shop_set.all %}
-		<tr>
-			<td>
-				{% if shop.image %}
-				<a href="{{ shop.get_absolute_url }}">
-					<img src="{{ shop.image.url }}" />
-				</a>
-				{% endif %}
-			</td>
-
-				<td><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></td>
-			<td>{{ shop.desc }}</td>
-			<td>{{ shop.latlng }}</td>
-			<td>{{ shop.address }}</td>
-			<td>{{ shop.is_public }}</td>
-		</tr>
-	{% endfor %}
-	</tbody>
-</table>
-
-
-<hr/>
-<a href="{% url "shop:index" %}">대문</a>
+			</div>
+			<hr/>
+			<a href="{% url "shop:index" %}" class="btn btn-primary">대문</a>
+		</div>
+	</div>
+</div>
 
 {% endblock %}
