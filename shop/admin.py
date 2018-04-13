@@ -24,7 +24,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Shop)
 class ShopAdmin(admin.ModelAdmin):
-	list_display = ('name','address_link')
+	list_display = ['category','name','address_link']
 
 	def address_link(self, shop):
 		if shop.address: #위와 동일

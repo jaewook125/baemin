@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize', #<-콤마찍는 임포트
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',

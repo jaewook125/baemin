@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
+from django.urls import reverse
 from django.db import models
 from jsonfield import JSONField
 
@@ -8,6 +9,10 @@ class Category(models.Model):
 	icon = models.ImageField(blank=True)
 	is_public = models.BooleanField(default=False, db_index=True)
 	#공개된 카테고리만 찾고싶을때
+
+
+	def get_absolute_url(self):
+		return reverse('shop:category_detail', args=[self.pk])
 
 	def __str__(self):
 		return self.name
@@ -24,6 +29,9 @@ class Shop(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	def get_absolute_url(self):
+		return reverse('shop:shop_detail', args=[self.pk])
 
 	@property
 	def address(self):
