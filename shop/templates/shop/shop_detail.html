@@ -26,6 +26,24 @@
 				</tbody>
 			</table>
 
+			<h3>리뷰</h3>
+		<a href="{% url "shop:review_new" shop.pk %}" class="btn btn-primary">리뷰 쓰기</a>
+		<table>
+			<tbody>
+			{% for review in shop.review_set.all %}
+			<tr>
+				<td>
+					{{ review.message }}
+					by {{ review.author }}
+					{% if review.photo %}
+						<img src="{{ review.photo.url }}" style="max-width: 200px;" />
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}				
+			</tbody>
+		</table>
+
 			<hr/>
 			<a href="{{ shop.category.get_absolute_url }}">{{ shop.category.name }} 카테고리로</a>
 			<a href="{% url "shop:index" %}">대문</a>
