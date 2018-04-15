@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.conf.urls.static import static
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
     path('shop/', include('shop.urls',namespace='shop')),
+    path('', lambda request: redirect('shop:index'), name='root'),
 ]
 
 if settings.DEBUG:

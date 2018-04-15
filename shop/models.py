@@ -45,6 +45,10 @@ class Review(models.Model):
 	rating = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 	message = models.TextField()
 
+	class Meta:
+		ordering = ('-id',)
+		#현재 id는 기본 primary키다		
+
 	def __str__(self):
 		return self.message
 
