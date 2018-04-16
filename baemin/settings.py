@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'baemin.context_processors.baemin',
+                #템블릿단에서 쓸수잇는 변수 목록에 대한 디폴트 목록을 만들어준다
             ],
         },
     },
@@ -131,3 +133,5 @@ STATICFILES_DIRS =[
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+NAVER_MAP_CLIENT_ID = 'toIz8XC2jh54ck3aiZVP'

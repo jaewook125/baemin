@@ -6,6 +6,29 @@
 	<div class="row">
 		<div class="col-sm-12 mb-3">
 			<h3>{{ shop.name }}</h3>
+<!-- 
+			{{ request.scheme }} 프로토콜 얻어옴
+			{{ request.get_host }} 호스트를 얻어옴
+			settings의 기본 context_processors 변수를 사용
+-->
+					
+			<img src="https://openapi.naver.com/v1/map/staticmap.bin?clientId={{ settings.NAVER_MAP_CLIENT_ID }}&url={{ request.scheme }}://{{ request.get_host }}&crs=EPSG:4326&center={{ shop.meta.lng }},{{ shop.meta.lat }}&level=13&w=320&h=320&baselayer=default&markers={{ shop.meta.lng}},{{ shop.meta.lat }}">
+			<table>
+					<tr><th>주소</th><td>{{ shop.meta.address }}</td></tr>
+					<tr>
+						<th>전화번호</th>
+						<td>
+							<a href="tel:{{ shop.meta.phone }}">
+								{{ shop.meta.phone }}
+							</a>
+						</td>
+					</tr>
+					<tr><th>최소주문 금액</th><td>{{ shop.meta.min_order_amount }}</td></tr>
+					<tr><th>배달비</th><td>{{ shop.meta.delivery_fee_explanation }}</td></tr>
+			</table>
+
+
+			<hr/>
 			<table class="table table-bordered table-hover">
 				<tbody>
 				{% for item in shop.item_set.all %}
