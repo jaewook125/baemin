@@ -1,0 +1,20 @@
+{% extends "shop/layout.html" %}
+
+{% block content %}
+	{{form.instance.name}}
+	{{form.instance.amount}}
+
+	{% for item_order in item_order_list %}
+		{{item_order.item.name}}
+		{{item_order.quantity}}
+		{{item_order.amount}}
+	{% endfor %}
+
+	<form action="" method="post">
+		{% csrf_token %}
+		<table>
+			{{form.as_table}}
+		</table>
+		<input type="submit" name="">
+	</form>
+{% endblock %}

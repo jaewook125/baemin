@@ -29,10 +29,14 @@
 
 
 			<hr/>
-			<table class="table table-bordered table-hover">
+			<a href="{% url "shop:order_new" shop.pk %}"
+			id="order-button" class="btn btn-primary btn-block mt-3 mb-3">주문하기</a>
+
+			<table class="table table-bordered table-hover" id="item-list">
 				<tbody>
 				{% for item in shop.item_set.all %}
-					<tr>
+					<tr class="item" data-item-id="{{ item.id }}">
+						<!-- 이 아이템에 대한 아이템 id가 {{무엇이다}}를 보여주게함 -->
 						<td>
 							{% if item.photo %}
 							<a href="{{ item.get_absolute_url }}">
@@ -44,6 +48,11 @@
 						<td>{{ item.desc }}</td>
 						<td>{{ item.amount|intcomma }}</td>
 						<td>{{ item.is_public }}</td>
+						<td>
+							<i class='factor-button fa fa-minus-circle' data-factor='-1'></i>
+								<span class="quantity">0</span>
+							<i class='factor-button fa fa-plus-circle' data-factor='1'></i>
+						</td>
 					</tr>
 				{% endfor %}
 				</tbody>
@@ -73,5 +82,70 @@
 		</div>
 	</div>
 </div>
+{% endblock %}
 
+{% block extra-body %}
+<script>
+	$(function(){
+		$('#item-list .item .factor-button').click(function(){
+			// factor-button 클릭했을때 나오는 함수
+			var $el = $(this).siblings('.quantity');
+			// this는 factor-button를 가르침
+			// sibling으로 quantity엘리먼트를 획득한다
+			var factor = parseInt($(this).data('factor'));
+			// 현재 factor-button에 data factor라는 항목을 가지고온다
+			// 그 후 parseInt로 변환한다
+			var quantity = parseInt($el.html()) + factor;
+			// quantity에 있는 갯수가 실제 갯수
+			// 그 갯수 값을 parseInt로 숫자로 변환 후 factor와 더함
+			if ( quantity < 0 ) quantity = 0;
+			// 현재 quantity가 0이하라면 강제로 0으로 만든다
+			$el.html(quantity);
+			// 증감된 값을 넣어준다
+		});
+
+	$('#order-button').click(function(){
+	//클릭 리스너에서 href를 이동할때
+	//참이냐 거짓이냐를 판단한 후 결정
+		var mapped = _.map($('#item-list .item'), function(item){
+			//각각의 tr태그를 순회한 후 인자function(item)로 넘겨준다
+			var item_id = $(item).data('item-id');
+			//각각의 상품별 jqurey인스턴스
+			//item_id는 특정 item에 대한 primary키다
+			var quantity = $(item).find('.quantity').html();
+			//class이름이 quantity를 찾아서 html로 뽑아낸다
+			//현재 이 item_id에 대한 주문수량
+			return { item_id : item_id, quantity: quantity };
+			//item_id(문자열) : item_id(변수 item_id)
+			//자바스크립트는 딕셔너리의 경우에 따옴표를 안해도 문자열로 인식한다
+		});
+
+		var filtered = _.filter(mapped, function(item){
+			return item.quantity > 0;
+			//0보다 큰 item만 반환해준다
+		});
+
+		if ( filtered.length > 0){
+
+			//실제 주문한 경우가 있는 상황
+			var args = $.param(_.object(_.map(filtered, _.values)));
+			//파이썬에 사전과같이 데이터를 넘기게되면
+			//문자열을 만들어낸다
+			var url = $(this).attr('href') + '?' + args;
+			//이동할 주소를 가지고와서
+			$(this).attr('href', url);
+			//완성된 주소
+			return true;
+			//참이면 href이동
+		}
+		else {
+			//모든 메뉴가 0인경우는?
+			alert('상품 수량을 선택해주세요.');
+		}
+
+		return false;
+		//거짓이면 alert 호출 후 이동하지않음
+		});
+});
+</script>
 {% endblock %}

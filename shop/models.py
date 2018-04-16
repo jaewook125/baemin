@@ -64,5 +64,19 @@ class Item(models.Model):
 
 	def __str__(self):
 		return self.name
-# class Order(models.Model):
-# 	pass
+
+class Order(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+	amount = models.PositiveIntegerField()
+	address = models.CharField(max_length=100)
+	phone = models.CharField(max_length=11)
+
+class OrderItem(models.Model):
+	item = models.ForeignKey(Item, on_delete=models.PROTECT)
+	quantity = models.PositiveIntegerField()
+	order = models.ForeignKey(Order, on_delete=models.PROTECT)
+	# amount
+
+	@property
+	def amount(self):
+		return self.quantity * self.item.amount
